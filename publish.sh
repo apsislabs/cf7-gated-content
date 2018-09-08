@@ -13,7 +13,7 @@ GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
 # svn config
 SVNPATH="/tmp/$PLUGINSLUG" # path to a temp SVN repo. No trailing slash required and don't add trunk.
 SVNURL="https://plugins.svn.wordpress.org/cf7-gated-content/" # Remote SVN repo on wordpress.org, with trailing slash
-SVNUSER="wkirby" # your svn username
+SVNUSER="odisant" # your svn username
 
 
 # Let's begin...
