@@ -78,7 +78,6 @@ README.md
 .gitignore" "$SVNPATH/trunk/"
 
 echo "Moving assets to SVN assets"
-svn rm $SVNPATH/assets/*
 mv $SVNPATH/trunk/assets/*.png $SVNPATH/assets
 mv $SVNPATH/trunk/assets/*.jpg $SVNPATH/assets
 
