@@ -80,6 +80,7 @@ README.md
 echo "Moving assets to SVN assets"
 svn rm $SVNPATH/assets/*
 mv $SVNPATH/trunk/assets/*.png $SVNPATH/assets
+mv $SVNPATH/trunk/assets/*.jpg $SVNPATH/assets
 
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/
