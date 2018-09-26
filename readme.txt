@@ -4,7 +4,7 @@ Tags: form, contact form, contact form 7, cf7, gated content, gated file
 Requires at least: 4.5
 Tested up to: 4.9.8
 Requires PHP: 5.6
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,6 +19,10 @@ This section describes how to install the plugin and get it working.
 
 1. Upload the contents of `/contact-form-7-gated-content/` to the `/wp-content/plugins/` directory
 2. Activate the *Contact Form 7 Gated Content* Plugin through the 'Plugins' menu in WordPress
+
+== Credits ==
+
+Plugin art: Uehara, Konen, Artist. Secchū Mimeguri. Japan, None. [Between 1900 and 1920] Photograph. https://www.loc.gov/item/2008660511/.
 
 == Frequently Asked Questions ==
 = What kinds of files can I gate? =

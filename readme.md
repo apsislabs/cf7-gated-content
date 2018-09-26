@@ -39,3 +39,8 @@ Yes! The default CSS can be disabled on a per-form basis.
 ### Does this secure my files?
 
 **No!** Gating content does not secure it from outside access. While it does restrict visibility of a download link to those who have completed your form, it does nothing to make the file private. Anyone with the attachment link or a properly formatted cookie will be able to access your file.
+
+
+## Credits
+
+Plugin art: Uehara, Konen, Artist. Secchū Mimeguri. Japan, None. [Between 1900 and 1920] Photograph. https://www.loc.gov/item/2008660511/.
