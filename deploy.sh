@@ -78,7 +78,8 @@ README.md
 .gitignore" "$SVNPATH/trunk/"
 
 echo "Moving assets to SVN assets"
-mv -r $SVNPATH/trunk/ $SVNPATH/assets
+svn rm $SVNPATH/assets/*
+mv $SVNPATH/trunk/assets $SVNPATH/assets
 
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/
