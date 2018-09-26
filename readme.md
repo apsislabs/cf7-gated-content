@@ -43,4 +43,4 @@ Yes! The default CSS can be disabled on a per-form basis.
 
 ## Credits
 
-Plugin art: Uehara, Konen, Artist. Secchū Mimeguri. Japan, None. [Between 1900 and 1920] Photograph. https://www.loc.gov/item/2008660511/.
+**Image Credit:**  Uehara, Konen, Artist. Secchū Mimeguri. Japan, None. [Between 1900 and 1920] Photograph. https://www.loc.gov/item/2008660511/.

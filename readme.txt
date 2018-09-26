@@ -4,7 +4,7 @@ Tags: form, contact form, contact form 7, cf7, gated content, gated file
 Requires at least: 4.5
 Tested up to: 4.9.8
 Requires PHP: 5.6
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,11 +20,10 @@ This section describes how to install the plugin and get it working.
 1. Upload the contents of `/contact-form-7-gated-content/` to the `/wp-content/plugins/` directory
 2. Activate the *Contact Form 7 Gated Content* Plugin through the 'Plugins' menu in WordPress
 
-== Credits ==
-
-Plugin art: Uehara, Konen, Artist. Secchū Mimeguri. Japan, None. [Between 1900 and 1920] Photograph. https://www.loc.gov/item/2008660511/.
+**Image Credit:** Uehara, Konen, Artist. Secchū Mimeguri. Japan, None. [Between 1900 and 1920] Photograph. https://www.loc.gov/item/2008660511/.
 
 == Frequently Asked Questions ==
+
 = What kinds of files can I gate? =
 
 Anything that can be uploaded to the WordPress media library.
@@ -33,14 +32,14 @@ Anything that can be uploaded to the WordPress media library.
 
 Yes! You can customize the output of the download box with CSS, or you can add this snippet to your theme\'s `functions.php` file:
 
-```
+<code>
 function my_content_button($url, $button_text, $button_classes, $content)
 {
   return "$button_text";
 }
 
 add_filter('wpcf7_gated_content_button', 'my_content_button', 10, 3);
-```
+</code>
 
 = Can I disable the default CSS? =
 
@@ -54,6 +53,7 @@ Yes! The default CSS can be disabled on a per-form basis.
 1. Options Panel
 2. Before Submission
 3. After Submission
+4. Repeat Visit
 
 == Changelog ==
 
