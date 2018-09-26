@@ -6,6 +6,7 @@
 PLUGINSLUG="cf7-gated-content"
 CURRENTDIR=`pwd`
 MAINFILE="cf7_gated_content.php" # this should be the name of your main php file in the wordpress plugin
+ASSETPATH="$CURRENTDIR/_assets"
 
 # git config
 GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
@@ -76,8 +77,17 @@ README.md
 .git
 .gitignore" "$SVNPATH/trunk/"
 
+echo "Moving assets to SVN assets"
+mv -r $SVNPATH/trunk/ $SVNPATH/assets
+
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/
+# Add all new files that are not set to be ignored
+svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
+svn commit --username=$SVNUSER -m "$COMMITMSG"
+
+echo "Changing directory to SVN assets and committing"
+cd $SVNPATH/assets/
 # Add all new files that are not set to be ignored
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 svn commit --username=$SVNUSER -m "$COMMITMSG"
