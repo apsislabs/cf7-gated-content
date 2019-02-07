@@ -100,6 +100,7 @@ class ContactFormGatedContent {
 	 * @access public
 	 */
 	public static function saveGatedContentForm( $contact_form ) {
+		global $post;
 		$contact_form_id = $contact_form->id();
 		$meta = array();
 
@@ -119,7 +120,7 @@ class ContactFormGatedContent {
 		}
 
 		// Don't save on revisions
-		if ( 'revision' === $post->post_type ) {
+		if ($post && 'revision' === $post->post_type ) {
 			return $contact_form_id;
 		}
 
@@ -127,8 +128,8 @@ class ContactFormGatedContent {
 		$meta['image_attachment_url'] = sanitize_text_field($_POST['image_attachment_url']);
 		$meta['download_button_text'] = sanitize_text_field($_POST['download_button_text']);
 		$meta['download_button_classes'] = sanitize_text_field($_POST['download_button_classes']);
-		$meta['always_require_form'] = !!$_POST['always_require_form'];
-		$meta['include_default_css'] = !!$_POST['include_default_css'];
+		$meta['always_require_form'] = !!(isset($_POST['always_require_form']) ? $_POST['always_require_form'] : false);
+		$meta['include_default_css'] = !!(isset($_POST['include_default_css']) ? $_POST['include_default_css'] : false);
 		$meta['download_content'] = wp_kses_post($_POST['download_content']);
 
 		foreach ( $meta as $key => $value ) {
@@ -206,7 +207,11 @@ class ContactFormGatedContent {
 	 * @access public
 	 */
 	public static function outputShortcode($output, $tag, $atts, $m) {
-		extract($atts, EXTR_SKIP);
+		if ($tag != 'contact-form-7') { return ''; }
+
+		$id = $atts ? $atts['id'] : null;
+
+		if (!$id) { return ''; }
 
 		$gated_content_url = get_post_meta($id, 'image_attachment_url', true);
 		$include_default_css = get_post_meta($id, 'include_default_css', true);
@@ -314,9 +319,9 @@ class ContactFormGatedContent {
 			include $path;
 			return ob_get_clean();
 		}
-    }
+		}
 
-    /**
+		/**
 	 * Get default values for gated content settings
 	 *
 	 * @return Array    the array of default values
@@ -334,9 +339,9 @@ class ContactFormGatedContent {
 			"attachment_meta" => null,
 			"include_default_css" => true
 		);
-    }
+		}
 
-    /**
+		/**
 	 * Helper to store meta values
 	 *
 	 * @since 1.0.0
