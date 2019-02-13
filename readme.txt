@@ -2,7 +2,7 @@
 Contributors: odisant
 Tags: form, contact form, contact form 7, cf7, gated content, gated file
 Requires at least: 4.5
-Tested up to: 4.9.8
+Tested up to: 5.0.3
 Requires PHP: 5.6
 Stable tag: 1.0.9
 License: GPLv2
