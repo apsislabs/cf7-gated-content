@@ -13,14 +13,14 @@ Gate files behind your Contact Form 7 forms.
 == Description ==
 Contact Form 7 Gated Content is a lead-capture extension for Contact Form 7. This plugin adds options to your CF7 forms to gate access to a file so users don't see a download button until after the form has been successfully submitted. Repeat visitors will be presented with the download button only, so repeat form submissions are not required.
 
+**Image Credit:** Uehara, Konen, Artist. Secchū Mimeguri. Japan, None. [Between 1900 and 1920] Photograph. https://www.loc.gov/item/2008660511/.
+
 == Installation ==
 
 This section describes how to install the plugin and get it working.
 
 1. Upload the contents of `/contact-form-7-gated-content/` to the `/wp-content/plugins/` directory
 2. Activate the *Contact Form 7 Gated Content* Plugin through the 'Plugins' menu in WordPress
-
-**Image Credit:** Uehara, Konen, Artist. Secchū Mimeguri. Japan, None. [Between 1900 and 1920] Photograph. https://www.loc.gov/item/2008660511/.
 
 == Frequently Asked Questions ==
 
