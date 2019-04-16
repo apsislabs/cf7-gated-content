@@ -2,7 +2,7 @@
 Contributors: odisant
 Tags: form, contact form, contact form 7, cf7, gated content, gated file
 Requires at least: 4.5
-Tested up to: 5.0.3
+Tested up to: 5.1.1
 Requires PHP: 5.6
 Stable tag: 1.1.0
 License: GPLv2
@@ -11,9 +11,14 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Gate files behind your Contact Form 7 forms.
 
 == Description ==
+
 Contact Form 7 Gated Content is a lead-capture extension for Contact Form 7. This plugin adds options to your CF7 forms to gate access to a file so users don't see a download button until after the form has been successfully submitted. Repeat visitors will be presented with the download button only, so repeat form submissions are not required.
 
 **Image Credit:** Uehara, Konen, Artist. Secchū Mimeguri. Japan, None. [Between 1900 and 1920] Photograph. https://www.loc.gov/item/2008660511/.
+
+== Issues? ==
+
+If you're experiencing an issue with the plugin, please file an issue on our [GitHub](https://github.com/apsislabs/cf7-gated-content/issues).
 
 == Installation ==
 
