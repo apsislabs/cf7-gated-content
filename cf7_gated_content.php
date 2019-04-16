@@ -193,6 +193,7 @@ class ContactFormGatedContent {
 		wp_enqueue_script('cf7_gated_content', plugin_dir_url( __FILE__ ) . 'js/cf7_gated_content.js', ['jquery'], true);
 
 		wp_localize_script('cf7_gated_content', 'wpcf7gc', array(
+				'wpDebug' => WP_DEBUG,
 				'ajaxurl' => admin_url('admin-ajax.php'),
 				'cookieKey' => GATED_CONTENT_COOKIE_KEY
 			));
