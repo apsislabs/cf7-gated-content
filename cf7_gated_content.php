@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Contact Form 7 Gated Content
  * Description: An add-on for Contact Form 7 that allows you to gate content behind form submission
- * Version: 1.1.1
+ * Version: 1.2.0
  * Author: Apsis Labs
  * Author URI: http://apsis.io
  * License: GPLv3
