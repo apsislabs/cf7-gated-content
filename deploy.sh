@@ -95,7 +95,7 @@ svn commit --username=$SVNUSER -m "$COMMITMSG"
 echo "Changing directory to SVN assets and committing"
 cd $SVNPATH/assets/
 # Add all new files that are not set to be ignored
-svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
+svn add --force * --auto-props --parents --depth infinity -q
 svn commit --username=$SVNUSER -m "$COMMITMSG"
 
 echo "Creating new SVN tag & committing it"
