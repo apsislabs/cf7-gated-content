@@ -208,7 +208,7 @@ class ContactFormGatedContent {
 	 * @access public
 	 */
 	public static function outputShortcode($output, $tag, $atts, $m) {
-		if ($tag != 'contact-form-7') { return ''; }
+		if ($tag != 'contact-form-7') { return $output; }
 
 		$id = $atts ? $atts['id'] : null;
 
