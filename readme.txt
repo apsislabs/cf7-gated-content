@@ -4,7 +4,7 @@ Tags: form, contact form, contact form 7, cf7, gated content, gated file
 Requires at least: 4.5
 Tested up to: 5.1.1
 Requires PHP: 5.6
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,4 +65,6 @@ Yes! The default CSS can be disabled on a per-form basis.
 * 1.0.8 Add art assets
 * 1.0.1 Fix deployment issues
 * 1.0.0 Initial release
+* 1.2.0 Fix issue with multiple download buttons
+* 1.3.0 Fix issue with breaking other shortcodes
 == Upgrade Notice ==
