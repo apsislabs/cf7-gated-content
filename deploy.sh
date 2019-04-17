@@ -75,21 +75,20 @@ echo "Ignoring github specific files and deployment script"
 svn propset svn:ignore "deploy.sh
 README.md
 .git
-.gitignore" "$SVNPATH/trunk/"
+.gitignore
+*.sketch"
 
 echo "Moving assets to SVN assets"
-mv $SVNPATH/trunk/assets/*.gif $SVNPATH/assets
 mv $SVNPATH/trunk/assets/*.jpg $SVNPATH/assets
 mv $SVNPATH/trunk/assets/*.png $SVNPATH/assets
 
-svn propset svn:mime-type image/gif $SVNPATH/assets/*.gif
 svn propset svn:mime-type image/jpeg $SVNPATH/assets/*.jpg
 svn propset svn:mime-type image/png $SVNPATH/assets/*.png
 
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/
 # Add all new files that are not set to be ignored
-svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
+svn add --force * --auto-props --parents --depth infinity -q
 svn commit --username=$SVNUSER -m "$COMMITMSG"
 
 echo "Changing directory to SVN assets and committing"
