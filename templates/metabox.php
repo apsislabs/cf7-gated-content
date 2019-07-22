@@ -7,6 +7,21 @@
 <table class="form-table">
     <tr>
         <th scope="row">
+            <?= __('Enable Gated Content', 'apsis_wp'); ?>
+        </th>
+        <td>
+            <label for="enable_gated_content">
+                <input name="enable_gated_content" type="checkbox" id="enable_gated_content" value="1" <?= checked($enable_gated_content); ?>>
+                <?= __('Enable Gated Content for this Form.', 'apsis_wp'); ?>
+            </label>
+
+            <p class="description">
+                <?= __('Check this box to enable Gated Content download button when submitting this form.', 'apsis_wp'); ?>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
             <?= __('Gated Content', 'apsis_wp'); ?>
         </th>
 

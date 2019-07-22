@@ -34,9 +34,11 @@
           );
         },
         success: function(res) {
-          if ($target && $("#" + downloadId).length < 1) {
-            var $downloadContainer = $("<div></div>", { id: downloadId });
-            $downloadContainer.append(res.data).appendTo($target);
+          if (res.data != null) {
+            if ($target && $("#" + downloadId).length < 1) {
+              var $downloadContainer = $("<div></div>", { id: downloadId });
+              $downloadContainer.append(res.data).appendTo($target);
+            }
           }
         }
       });
