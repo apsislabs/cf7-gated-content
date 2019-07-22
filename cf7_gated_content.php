@@ -75,6 +75,7 @@ class ContactFormGatedContent
     $download_button_text = get_post_meta($post->id(), 'download_button_text', true);
     $download_button_classes = get_post_meta($post->id(), 'download_button_classes', true);
     $always_require_form = get_post_meta($post->id(), 'always_require_form', true);
+    $open_in_new_tab = get_post_meta($post->id(), 'open_in_new_tab', true);
     $enable_gated_content = get_post_meta($post->id(), 'enable_gated_content', true);
     $include_default_css = get_post_meta($post->id(), 'include_default_css', true);
 
@@ -89,10 +90,13 @@ class ContactFormGatedContent
       "download_button_text",
       "download_button_classes",
       "always_require_form",
+      "open_in_new_tab",
       "enable_gated_content",
       "attachment_meta",
       "include_default_css"
-    )));
+    ), function ($v) {
+      return $v !== null;
+    }));
 
     // Render metabox
     echo static::renderTemplate(dirname(__FILE__) . '/templates/metabox.php', $values);
@@ -136,6 +140,7 @@ class ContactFormGatedContent
     $meta['download_button_text'] = sanitize_text_field($_POST['download_button_text']);
     $meta['download_button_classes'] = sanitize_text_field($_POST['download_button_classes']);
     $meta['always_require_form'] = !!(isset($_POST['always_require_form']) ? $_POST['always_require_form'] : false);
+    $meta['open_in_new_tab'] = !!(isset($_POST['open_in_new_tab']) ? $_POST['open_in_new_tab'] : false);
     $meta['enable_gated_content'] = !!(isset($_POST['enable_gated_content']) ? $_POST['enable_gated_content'] : false);
     $meta['include_default_css'] = !!(isset($_POST['include_default_css']) ? $_POST['include_default_css'] : false);
     $meta['download_content'] = wp_kses_post($_POST['download_content']);
@@ -271,18 +276,22 @@ class ContactFormGatedContent
   {
     $enabled = get_post_meta($contact_form_id, 'enable_gated_content', true);
     $url = get_post_meta($contact_form_id, 'image_attachment_url', true);
-    $button_text = get_post_meta($contact_form_id, 'download_button_text', true);
-    $button_classes = get_post_meta($contact_form_id, 'download_button_classes', true);
-    $content = wp_kses_post(get_post_meta($contact_form_id, 'download_content', true));
 
     if ($enabled && $url) {
+      $button_text = get_post_meta($contact_form_id, 'download_button_text', true);
+      $button_classes = get_post_meta($contact_form_id, 'download_button_classes', true);
+      $content = wp_kses_post(get_post_meta($contact_form_id, 'download_content', true));
+      $open_in_new_tab = get_post_meta($contact_form_id, 'open_in_new_tab', true);
+
       $template_path = dirname(__FILE__) . '/templates/download_button.php';
+      $target = $open_in_new_tab ? "_blank" : "_self";
 
       $output = static::renderTemplate($template_path, compact(
         "url",
         "button_text",
         "button_classes",
-        "content"
+        "content",
+        "target"
       ));
 
       return apply_filters(
@@ -362,6 +371,7 @@ class ContactFormGatedContent
       "download_button_text" => __("Download", "apsis_wp"),
       "download_button_classes" => null,
       "always_require_form" => false,
+      "open_in_new_tab" => true,
       "enable_gated_content" => true,
       "attachment_meta" => null,
       "include_default_css" => true

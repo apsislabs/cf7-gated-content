@@ -101,6 +101,22 @@
 
     <tr>
         <th scope="row">
+            <?= __('Open Download in New Tab', 'apsis_wp'); ?>
+        </th>
+        <td>
+            <label for="open_in_new_tab">
+                <input name="open_in_new_tab" type="checkbox" id="open_in_new_tab" value="1" <?= checked($open_in_new_tab); ?>>
+                <?= __('Open download link in new tab.', 'apsis_wp'); ?>
+            </label>
+
+            <p class="description">
+                <?= __('Set the <code>target</code> attribute of your download link to <code>_blank</code>.', 'apsis_wp'); ?>
+            </p>
+        </td>
+    </tr>
+
+    <tr>
+        <th scope="row">
             <?= __('Include Default CSS', 'apsis_wp'); ?>
         </th>
         <td>
