@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Contact Form 7 Gated Content
  * Description: An add-on for Contact Form 7 that allows you to gate content behind form submission
- * Version: 1.4.0
+ * Version: 1.4.1
  * Author: Apsis Labs
  * Author URI: http://apsis.io
  * License: GPLv3
@@ -95,7 +95,7 @@ class ContactFormGatedContent
       "attachment_meta",
       "include_default_css"
     ), function ($v) {
-      return $v !== null;
+      return $v != null;
     }));
 
     // Render metabox
