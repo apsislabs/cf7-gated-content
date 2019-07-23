@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Contact Form 7 Gated Content
  * Description: An add-on for Contact Form 7 that allows you to gate content behind form submission
- * Version: 1.4.1
+ * Version: 1.4.2
  * Author: Apsis Labs
  * Author URI: http://apsis.io
  * License: GPLv3
@@ -39,6 +39,7 @@ class ContactFormGatedContent
     add_action('wp_ajax_nopriv_getDownloadButton', array(static::class, 'getDownloadButton'));
 
     add_filter('do_shortcode_tag', array(static::class, 'outputShortcode'), 10, 4);
+    add_filter('wpcf7_form_response_output', array(static::class, 'addFormResponse'), 10, 4);
   }
 
   /**
@@ -251,6 +252,23 @@ class ContactFormGatedContent
       if (!$always_require_form && isset($_COOKIE[$cookie_key])) {
         $output = static::renderDownloadButton($id);
       }
+    }
+
+    return $output;
+  }
+
+  /**
+   * Modify the output of the form response if the form was posted
+   * without AJAX and includes the sent-ok class.
+   *
+   * @since 1.4.2
+   * @static
+   * @access public
+   */
+  public static function addFormResponse($output, $class, $_content, $form)
+  {
+    if ($form->is_posted() && strpos($class, 'wpcf7-mail-sent-ok')) {
+      $output = sprintf("%s%s", $output, static::renderDownloadButton($form->id()));
     }
 
     return $output;
