@@ -70,34 +70,41 @@ class ContactFormGatedContent
   {
     wp_nonce_field(METABOX_NONCE_SECRET, METABOX_NONCE_KEY);
 
-    $image_attachment_url = get_post_meta($post->id(), 'image_attachment_url', true);
-    $image_attachment_id = get_post_meta($post->id(), 'image_attachment_id', true);
-    $download_content = get_post_meta($post->id(), 'download_content', true);
-    $download_button_text = get_post_meta($post->id(), 'download_button_text', true);
-    $download_button_classes = get_post_meta($post->id(), 'download_button_classes', true);
-    $always_require_form = get_post_meta($post->id(), 'always_require_form', true);
-    $open_in_new_tab = get_post_meta($post->id(), 'open_in_new_tab', true);
-    $enable_gated_content = get_post_meta($post->id(), 'enable_gated_content', true);
-    $include_default_css = get_post_meta($post->id(), 'include_default_css', true);
+    if ($post->id()) {
+      // Fetch settings
+      $image_attachment_url = get_post_meta($post->id(), 'image_attachment_url', true);
+      $image_attachment_id = get_post_meta($post->id(), 'image_attachment_id', true);
+      $download_content = get_post_meta($post->id(), 'download_content', true);
+      $download_button_text = get_post_meta($post->id(), 'download_button_text', true);
+      $download_button_classes = get_post_meta($post->id(), 'download_button_classes', true);
+      $always_require_form = get_post_meta($post->id(), 'always_require_form', true);
+      $open_in_new_tab = get_post_meta($post->id(), 'open_in_new_tab', true);
+      $enable_gated_content = get_post_meta($post->id(), 'enable_gated_content', true);
+      $include_default_css = get_post_meta($post->id(), 'include_default_css', true);
 
-    // Fetch attachment value
-    $attachment_meta = static::getAttachmentMeta($image_attachment_id);
+      // Fetch attachment value
+      $attachment_meta = static::getAttachmentMeta($image_attachment_id);
 
-    // Merge with default values
-    $values = array_merge(static::getDefaults(), array_filter(compact(
-      "image_attachment_url",
-      "image_attachment_id",
-      "download_content",
-      "download_button_text",
-      "download_button_classes",
-      "always_require_form",
-      "open_in_new_tab",
-      "enable_gated_content",
-      "attachment_meta",
-      "include_default_css"
-    ), function ($v) {
-      return $v != null;
-    }));
+      $user_settings = array_filter(compact(
+        "image_attachment_url",
+        "image_attachment_id",
+        "download_content",
+        "download_button_text",
+        "download_button_classes",
+        "always_require_form",
+        "open_in_new_tab",
+        "enable_gated_content",
+        "attachment_meta",
+        "include_default_css"
+      ), function ($v) {
+        return !is_null($v);
+      });
+
+      // Merge with default values
+      $values = array_merge(static::getDefaults(), $user_settings);
+    } else {
+      $values = static::getDefaults();
+    }
 
     // Render metabox
     echo static::renderTemplate(dirname(__FILE__) . '/templates/metabox.php', $values);
@@ -140,12 +147,13 @@ class ContactFormGatedContent
     $meta['image_attachment_url'] = sanitize_text_field($_POST['image_attachment_url']);
     $meta['download_button_text'] = sanitize_text_field($_POST['download_button_text']);
     $meta['download_button_classes'] = sanitize_text_field($_POST['download_button_classes']);
-    $meta['always_require_form'] = !!(isset($_POST['always_require_form']) ? $_POST['always_require_form'] : false);
-    $meta['open_in_new_tab'] = !!(isset($_POST['open_in_new_tab']) ? $_POST['open_in_new_tab'] : false);
-    $meta['enable_gated_content'] = !!(isset($_POST['enable_gated_content']) ? $_POST['enable_gated_content'] : false);
-    $meta['include_default_css'] = !!(isset($_POST['include_default_css']) ? $_POST['include_default_css'] : false);
+    $meta['always_require_form'] = isset($_POST['always_require_form']) ? !!$_POST['always_require_form'] : false;
+    $meta['open_in_new_tab'] = isset($_POST['open_in_new_tab']) ? !!$_POST['open_in_new_tab'] : false;
+    $meta['enable_gated_content'] = isset($_POST['enable_gated_content']) ? !!$_POST['enable_gated_content'] : false;
+    $meta['include_default_css'] = isset($_POST['include_default_css']) ? !!$_POST['include_default_css'] : false;
     $meta['download_content'] = wp_kses_post($_POST['download_content']);
 
+    // wp_die(print_r($meta, true));
     foreach ($meta as $key => $value) {
       static::storeMetaValue($contact_form_id, $key, $value);
     }
@@ -404,7 +412,7 @@ class ContactFormGatedContent
    */
   static function storeMetaValue($post_id, $key, $value)
   {
-    if (!$value) {
+    if (!isset($value)) {
       // Delete the meta key if there's no value
       delete_post_meta($post_id, $key);
     } else {
