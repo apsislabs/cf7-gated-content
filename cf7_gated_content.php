@@ -78,6 +78,7 @@ class ContactFormGatedContent
       $download_button_text = get_post_meta($post->id(), 'download_button_text', true);
       $download_button_classes = get_post_meta($post->id(), 'download_button_classes', true);
       $always_require_form = get_post_meta($post->id(), 'always_require_form', true);
+      $show_download_for_admin = get_post_meta($post->id(), 'show_download_for_admin', true);
       $open_in_new_tab = get_post_meta($post->id(), 'open_in_new_tab', true);
       $enable_gated_content = get_post_meta($post->id(), 'enable_gated_content', true);
       $include_default_css = get_post_meta($post->id(), 'include_default_css', true);
@@ -92,6 +93,7 @@ class ContactFormGatedContent
         "download_button_text",
         "download_button_classes",
         "always_require_form",
+        "show_download_for_admin",
         "open_in_new_tab",
         "enable_gated_content",
         "attachment_meta",
@@ -148,6 +150,7 @@ class ContactFormGatedContent
     $meta['download_button_text'] = sanitize_text_field($_POST['download_button_text']);
     $meta['download_button_classes'] = sanitize_text_field($_POST['download_button_classes']);
     $meta['always_require_form'] = isset($_POST['always_require_form']) ? !!$_POST['always_require_form'] : false;
+    $meta['show_download_for_admin'] = isset($_POST['show_download_for_admin']) ? !!$_POST['show_download_for_admin'] : false;
     $meta['open_in_new_tab'] = isset($_POST['open_in_new_tab']) ? !!$_POST['open_in_new_tab'] : false;
     $meta['enable_gated_content'] = isset($_POST['enable_gated_content']) ? !!$_POST['enable_gated_content'] : false;
     $meta['include_default_css'] = isset($_POST['include_default_css']) ? !!$_POST['include_default_css'] : false;
@@ -248,6 +251,7 @@ class ContactFormGatedContent
     $gated_content_url = get_post_meta($id, 'image_attachment_url', true);
     $include_default_css = get_post_meta($id, 'include_default_css', true);
     $always_require_form = get_post_meta($id, 'always_require_form', true);
+    $show_download_for_admin = get_post_meta($id, 'show_download_for_admin', true);
     $enable_gated_content = get_post_meta($id, 'enable_gated_content', true);
 
     if ($include_default_css) {
@@ -257,7 +261,10 @@ class ContactFormGatedContent
     if ($gated_content_url && $enable_gated_content) {
       $cookie_key = GATED_CONTENT_COOKIE_KEY . $id;
 
-      if (!$always_require_form && isset($_COOKIE[$cookie_key])) {
+      if (
+        (!$always_require_form && isset($_COOKIE[$cookie_key])) ||
+        ($show_download_for_admin && current_user_can('administrator'))
+      ) {
         $output = static::renderDownloadButton($id);
       }
     }
@@ -397,6 +404,7 @@ class ContactFormGatedContent
       "download_button_text" => __("Download", "apsis_wp"),
       "download_button_classes" => null,
       "always_require_form" => false,
+      "show_download_for_admin" => false,
       "open_in_new_tab" => true,
       "enable_gated_content" => true,
       "attachment_meta" => null,
