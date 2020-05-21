@@ -101,6 +101,22 @@
 
     <tr>
         <th scope="row">
+            <?= __('Show Download for Admin', 'apsis_wp'); ?>
+        </th>
+        <td>
+            <label for="show_download_for_admin">
+                <input name="show_download_for_admin" type="checkbox" id="show_download_for_admin" value="1" <?= checked($show_download_for_admin); ?>>
+                <?= __('Always show the download button to admins.', 'apsis_wp'); ?>
+            </label>
+
+            <p class="description">
+                <?= __('Check this box to always show the download button for admin users.', 'apsis_wp'); ?>
+            </p>
+        </td>
+    </tr>
+
+    <tr>
+        <th scope="row">
             <?= __('Open Download in New Tab', 'apsis_wp'); ?>
         </th>
         <td>
