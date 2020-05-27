@@ -7,6 +7,21 @@
 <table class="form-table">
     <tr>
         <th scope="row">
+            <?= __('Enable Gated Content', 'apsis_wp'); ?>
+        </th>
+        <td>
+            <label for="enable_gated_content">
+                <input name="enable_gated_content" type="checkbox" id="enable_gated_content" value="1" <?= checked($enable_gated_content); ?>>
+                <?= __('Enable Gated Content for this Form.', 'apsis_wp'); ?>
+            </label>
+
+            <p class="description">
+                <?= __('Check this box to enable Gated Content download button when submitting this form.', 'apsis_wp'); ?>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">
             <?= __('Gated Content', 'apsis_wp'); ?>
         </th>
 
@@ -80,6 +95,38 @@
 
             <p class="description">
                 <?= __('Check this box to require visitors to complete the form on repeat visits. If left unchecked, visitors who complete the form will not see the form on repeat visits.', 'apsis_wp'); ?>
+            </p>
+        </td>
+    </tr>
+
+    <tr>
+        <th scope="row">
+            <?= __('Show Download for Admin', 'apsis_wp'); ?>
+        </th>
+        <td>
+            <label for="show_download_for_admin">
+                <input name="show_download_for_admin" type="checkbox" id="show_download_for_admin" value="1" <?= checked($show_download_for_admin); ?>>
+                <?= __('Always show the download button to admins.', 'apsis_wp'); ?>
+            </label>
+
+            <p class="description">
+                <?= __('Check this box to always show the download button for admin users.', 'apsis_wp'); ?>
+            </p>
+        </td>
+    </tr>
+
+    <tr>
+        <th scope="row">
+            <?= __('Open Download in New Tab', 'apsis_wp'); ?>
+        </th>
+        <td>
+            <label for="open_in_new_tab">
+                <input name="open_in_new_tab" type="checkbox" id="open_in_new_tab" value="1" <?= checked($open_in_new_tab); ?>>
+                <?= __('Open download link in new tab.', 'apsis_wp'); ?>
+            </label>
+
+            <p class="description">
+                <?= __('Set the <code>target</code> attribute of your download link to <code>_blank</code>.', 'apsis_wp'); ?>
             </p>
         </td>
     </tr>

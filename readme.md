@@ -6,6 +6,10 @@ Gate files behind your Contact Form 7 forms.
 
 Contact Form 7 Gated Content is a lead-capture extension for Contact Form 7. This plugin adds options to your CF7 forms to gate access to a file so users don\'t see a download button until after the form has been successfully submitted. Repeat visitors will be presented with the download button only, so repeat form submissions are not required.
 
+## Supported Versions
+
+We support and test against CF7 versions 4.9, 5.0, and 5.1. Earlier or later versions may not behave as expected.
+
 ## Installation
 
 This section describes how to install the plugin and get it working.
