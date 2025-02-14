@@ -1,7 +1,7 @@
 (function ($) {
   var SUCCESS_STATUS = "mail_sent";
   var AJAX_ACTION = "getDownloadButton";
-  var SUPPORTED_VERSIONS = [4, 5];
+  var SUPPORTED_VERSIONS = [5, 6];
 
   function warnVersion(version) {
     console.warn(
@@ -31,6 +31,7 @@
     var version = parseVersions(detail);
 
     switch (version.major) {
+      case 6:
       case 5:
         return detail.apiResponse.status;
 
@@ -46,6 +47,7 @@
     var version = parseVersions(detail);
 
     switch (version.major) {
+      case 6:
       case 5:
         return $(detail.apiResponse.into);
 
