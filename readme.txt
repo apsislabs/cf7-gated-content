@@ -18,7 +18,7 @@ Contact Form 7 Gated Content is a lead-capture extension for Contact Form 7. Thi
 
 == Supported Versions ==
 
-We support and test against CF7 versions 4.9, 5.0, and 5.1. Earlier or later versions may not behave as expected.
+We support and test against CF7 versions 5.2, and 6.0. Earlier or later versions may not behave as expected. If you need support for a version before 5.2, download and install version 1.4.4 or earlier of CF7 Gated Content.
 
 == Issues? ==
 
