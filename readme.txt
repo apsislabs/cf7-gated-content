@@ -4,7 +4,7 @@ Tags: form, contact form, contact form 7, cf7, gated content, gated file
 Requires at least: 4.5
 Tested up to: 6.7.2
 Requires PHP: 5.6
-Stable tag: 1.4.4
+Stable tag: 1.5.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
