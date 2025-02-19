@@ -49,6 +49,18 @@
     </tr>
 
     <tr>
+        <th scope="row">
+            <?= __('Use relative URL for download', 'apsis_wp'); ?>
+        </th>
+        <td>
+            <label for="use_relative_url">
+                <input name="use_relative_url" type="checkbox" id="use_relative_url" value="1" <?= checked($use_relative_url); ?>>
+                <?= __('Use relative URL for download button.', 'apsis_wp'); ?>
+            </label>
+        </td>
+    </tr>
+
+    <tr>
         <th>
             <?= __('Download Box Content', 'apsis_wp'); ?>
         </th>

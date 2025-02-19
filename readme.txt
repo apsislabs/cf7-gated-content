@@ -2,7 +2,7 @@
 Contributors: odisant
 Tags: form, contact form, contact form 7, cf7, gated content, gated file
 Requires at least: 4.5
-Tested up to: 5.4.1
+Tested up to: 6.7.2
 Requires PHP: 5.6
 Stable tag: 1.4.4
 License: GPLv2
@@ -18,7 +18,7 @@ Contact Form 7 Gated Content is a lead-capture extension for Contact Form 7. Thi
 
 == Supported Versions ==
 
-We support and test against CF7 versions 4.9, 5.0, and 5.1. Earlier or later versions may not behave as expected.
+We support and test against CF7 versions 5.2, and 6.0. Earlier or later versions may not behave as expected. If you need support for a version before 5.2, download and install version 1.4.4 or earlier of CF7 Gated Content.
 
 == Issues? ==
 

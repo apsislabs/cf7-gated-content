@@ -3,10 +3,11 @@
 /**
  * Plugin Name: Contact Form 7 Gated Content
  * Description: An add-on for Contact Form 7 that allows you to gate content behind form submission
- * Version: 1.4.4
+ * Version: 1.5.0
  * Author: Apsis Labs
  * Author URI: http://apsis.io
  * License: GPLv3
+ * Requires Plugins: contact-form-7
  *
  * @package cf7_gated_content
  */
@@ -16,6 +17,7 @@ namespace Apsis;
 const METABOX_NONCE_SECRET = 'cf7_gated_content_metaboxes';
 const METABOX_NONCE_KEY = 'cf7_gated_content_metaboxes_nonce';
 const GATED_CONTENT_COOKIE_KEY = 'cf7_gated_content_';
+const MINIMUM_CF7_VERSION = "5.2.0";
 
 class ContactFormGatedContent
 {
@@ -34,6 +36,8 @@ class ContactFormGatedContent
     add_action('wpcf7_enqueue_scripts', array(static::class, 'clientSideScript'));
     add_action('wpcf7_enqueue_styles', array(static::class, 'clientSideStyles'));
 
+    add_action( 'admin_notices', array(static::class, 'warnVersion'));
+
     add_action('admin_enqueue_scripts', array(static::class, 'adminScript'));
     add_action('wp_ajax_getDownloadButton', array(static::class, 'getDownloadButton'));
     add_action('wp_ajax_nopriv_getDownloadButton', array(static::class, 'getDownloadButton'));
@@ -49,9 +53,30 @@ class ContactFormGatedContent
    * @static
    * @access public
    */
+  public static function warnVersion()
+  {
+    if ( version_compare( MINIMUM_CF7_VERSION, WPCF7_VERSION, '>' ) ) {
+      $message = sprintf(
+        /* translators: 1: version of Contact Form 7, 2: version of WordPress, 3: URL */
+        __( '<strong>CF7 Gated Content requires Contact Form 7 v%1$s or higher.</strong> Please <a href="%2$s">update Contact Form 7</a> plugin or disable the CF7 Gated Content plugin.', 'apsis_wp' ),
+        MINIMUM_CF7_VERSION,
+        admin_url( 'update-core.php' )
+      );
+
+      wp_admin_notice( $message, 'type=warning' );
+    }
+  }
+
+  /**
+   * Register the gated contact form panel to display in CF7
+   *
+   * @since 1.0.0
+   * @static
+   * @access public
+   */
   public static function registerPanels($panels)
   {
-    $panels['gated_content'] = array(
+    $panels['gated-content'] = array(
       'title' => __('Gated Content', 'apsis_wp'),
       'callback' => [static::class, 'drawGatedContentPanel']
     );
@@ -82,6 +107,7 @@ class ContactFormGatedContent
       $open_in_new_tab = get_post_meta($post->id(), 'open_in_new_tab', true);
       $enable_gated_content = get_post_meta($post->id(), 'enable_gated_content', true);
       $include_default_css = get_post_meta($post->id(), 'include_default_css', true);
+      $use_relative_url = get_post_meta($post->id(), 'use_relative_url', true);
 
       // Fetch attachment value
       $attachment_meta = static::getAttachmentMeta($image_attachment_id);
@@ -97,7 +123,8 @@ class ContactFormGatedContent
         "open_in_new_tab",
         "enable_gated_content",
         "attachment_meta",
-        "include_default_css"
+        "include_default_css",
+        "use_relative_url"
       ), function ($v) {
         return !is_null($v);
       });
@@ -154,6 +181,7 @@ class ContactFormGatedContent
     $meta['open_in_new_tab'] = isset($_POST['open_in_new_tab']) ? !!$_POST['open_in_new_tab'] : false;
     $meta['enable_gated_content'] = isset($_POST['enable_gated_content']) ? !!$_POST['enable_gated_content'] : false;
     $meta['include_default_css'] = isset($_POST['include_default_css']) ? !!$_POST['include_default_css'] : false;
+    $meta['use_relative_url'] = isset($_POST['use_relative_url']) ? !!$_POST['use_relative_url'] : false;
     $meta['download_content'] = wp_kses_post($_POST['download_content']);
 
     // wp_die(print_r($meta, true));
@@ -242,11 +270,13 @@ class ContactFormGatedContent
       return $output;
     }
 
-    $id = $atts ? $atts['id'] : null;
+    $contact_form = static::getContactFormFromShortcodeAtts($atts);
 
-    if (!$id) {
-      return '';
+    if (!$contact_form) {
+      return $output;
     }
+
+    $id = $contact_form->id();
 
     $gated_content_url = get_post_meta($id, 'image_attachment_url', true);
     $include_default_css = get_post_meta($id, 'include_default_css', true);
@@ -260,16 +290,54 @@ class ContactFormGatedContent
 
     if ($gated_content_url && $enable_gated_content) {
       $cookie_key = GATED_CONTENT_COOKIE_KEY . $id;
+      $previously_submitted = isset($_COOKIE[$cookie_key]);
+      $show_download = !$always_require_form && $previously_submitted || ($show_download_for_admin && current_user_can('administrator'));
 
-      if (
-        (!$always_require_form && isset($_COOKIE[$cookie_key])) ||
-        ($show_download_for_admin && current_user_can('administrator'))
-      ) {
-        $output = static::renderDownloadButton($id);
+      if ($show_download) {
+        if ($always_require_form) {
+          $output .= static::renderDownloadButton($id);
+        } else {
+          $output = static::renderDownloadButton($id);
+        }
       }
     }
 
     return $output;
+  }
+
+  /**
+   * Get the contact-form instance from the contact-form-7 shortcode
+   *
+   * @since 1.5.0
+   * @static
+   * @access public
+   */
+  public static function getContactFormFromShortcodeAtts($atts)
+  {
+    $contact_form = null;
+
+    $atts = shortcode_atts(
+      array(
+        'id' => '',
+        'title' => '',
+      ),
+      $atts, 'wpcf7'
+    );
+
+    $id = trim( $atts['id'] );
+    $title = trim( $atts['title'] );
+
+    $contact_form = wpcf7_get_contact_form_by_hash( $id );
+
+    if ( ! $contact_form ) {
+      $contact_form = wpcf7_contact_form( $id );
+    }
+
+    if ( ! $contact_form ) {
+      $contact_form = wpcf7_get_contact_form_by_title( $title );
+    }
+
+    return $contact_form;
   }
 
   /**
@@ -310,14 +378,21 @@ class ContactFormGatedContent
     $enabled = get_post_meta($contact_form_id, 'enable_gated_content', true);
     $url = get_post_meta($contact_form_id, 'image_attachment_url', true);
 
+
     if ($enabled && $url) {
       $button_text = get_post_meta($contact_form_id, 'download_button_text', true);
       $button_classes = get_post_meta($contact_form_id, 'download_button_classes', true);
       $content = wp_kses_post(get_post_meta($contact_form_id, 'download_content', true));
       $open_in_new_tab = get_post_meta($contact_form_id, 'open_in_new_tab', true);
+      $use_relative_url = get_post_meta($contact_form_id, 'use_relative_url', true);
 
       $template_path = dirname(__FILE__) . '/templates/download_button.php';
       $target = $open_in_new_tab ? "_blank" : "_self";
+
+      if ($use_relative_url) {
+        $parsed_url = parse_url($url);
+        $url = $parsed_url['path'];
+      }
 
       $output = static::renderTemplate($template_path, compact(
         "url",
@@ -408,7 +483,8 @@ class ContactFormGatedContent
       "open_in_new_tab" => true,
       "enable_gated_content" => true,
       "attachment_meta" => null,
-      "include_default_css" => true
+      "include_default_css" => true,
+      "use_relative_url" => false,
     );
   }
 
